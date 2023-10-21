@@ -30,3 +30,9 @@
 *.exe
 *.out
 *.app
+
+.vscode/
+letter_lexem_test
+lexer
+number_lexem_test
+operator_lexem_test

@@ -4,13 +4,15 @@
 
 typedef enum {
     INITIAL,
-    MAYBE_HEX,
+    MAYBE_HEX_OR_FLOAT,
     HEX_PREFIX,
     DECIMAL,
     HEX,
+    FLOAT,
     FINISH_STATES,
     F_DECIMAL,
     F_HEX,
+    F_FLOAT,
     F_FAILED
 } NumbericLexemState;
 
@@ -27,16 +29,18 @@ Lexem* read_number_lexem(FILE* file) {
         {
         case INITIAL:
             if(c == '0') {
-                state = MAYBE_HEX;
+                state = MAYBE_HEX_OR_FLOAT;
             } else if(isdigit(c)) {
                 state = DECIMAL;
             } else {
                 state = F_FAILED;
             }
             break;
-        case MAYBE_HEX:
+        case MAYBE_HEX_OR_FLOAT:
             if(c == 'x' || c == 'X') {
                 state = HEX_PREFIX;
+            } else if(c == '.') {
+                state = FLOAT;
             } else if (!isalpha(c)) {
                 state = F_DECIMAL;
             } else {
@@ -47,8 +51,20 @@ Lexem* read_number_lexem(FILE* file) {
             if(isdigit(c)) {
                 break;
             }
-            if(!isalpha(c)) {
+            if(c == '.') {
+                state = FLOAT;
+            } else if(!isalpha(c)) {
                 state = F_DECIMAL;
+            } else {
+                state = F_FAILED;
+            }
+            break;
+        case FLOAT:
+            if(isdigit(c)) {
+                break;
+            }
+            if(!isalpha(c)) {
+                state = F_FLOAT;
             } else {
                 state = F_FAILED;
             }
@@ -89,6 +105,8 @@ Lexem* read_number_lexem(FILE* file) {
         lexem->type = NUMERIC_LITERAL_HEX;
     } else if (state == F_DECIMAL) {
         lexem->type = NUMERIC_LITERAL_DECIMAL;
+    } else if(state == F_FLOAT) {
+        lexem->type = NUMERIC_LITERAL_FLOAT;
     } else {
         lexem->type = FAILED;
     }

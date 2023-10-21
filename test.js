@@ -1,5 +1,7 @@
 // program to find the factorial of a number
 
+let random_number = 23.123
+
 // take input from the user
 const number = parseInt(prompt('Enter a positive integer: '));
 
@@ -12,6 +14,7 @@ if (number < 0) {
 else if (number === 0) {
     console.log('The factorial of ${number} is 1.');
 }
+
 
 // if number is positive
 else {

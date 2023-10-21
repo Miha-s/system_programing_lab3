@@ -21,6 +21,7 @@ static char* string_to_lexem_type[] = {
     "LITERALS",
     "NUMERIC_LITERAL_DECIMAL",
     "NUMERIC_LITERAL_HEX",
+    "NUMERIC_LITERAL_FLOAT",
     "SINGLE_STRING_LITERAL",
     "DOUBLE_STRING_LITERAL",
     "ROUND_LEFT_BRACKET",
